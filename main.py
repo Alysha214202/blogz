@@ -24,6 +24,19 @@ class Entry(db.Model):
         self.body = body
         self.owner = owner
 
+# class for users
+
+class User(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String(120))
+    blogs = db.relationship('Entry', backref='owner')
+
+def __init__(self, username, password):
+    self.username = username
+    self.password = password
+
 
 # display individual blog entries or all blog posts
 
