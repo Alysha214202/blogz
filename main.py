@@ -37,6 +37,16 @@ def __init__(self, username, password):
     self.username = username
     self.password = password
 
+# check to make sure the user is logged in
+
+@app.before_request
+def require_login():
+    # allowed-routes are the functions
+    allowed_routes = ['login', 'show_blog', 'register', 'index', 'static']
+    # redirects to login page if user is not logged in
+    if 'username' not in session and request.endpoint not in allowed_routes:
+        return redirect('/login')
+
 
 # display individual blog entries or all blog posts
 
