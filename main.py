@@ -98,8 +98,10 @@ def add_entry():
         entry_title = request.form['blog_title']
         # assigning variable to blog body
         entry_body = request.form['blog_body']
+        #assigning owner to blog post
+        owner = User.query.filter_by(username=session['username']).first()
         # new blog post variable from title and entry
-        entry_new = Entry(entry_title, entry_body)
+        entry_new = Entry(entry_title, entry_body, owner)
 
         # entry will be added if title and body have inputs in them
         if empty_val(entry_title) and empty_val(entry_body):
