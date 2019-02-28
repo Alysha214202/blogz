@@ -180,6 +180,40 @@ def add_user():
     else:
         return render_template('signup.html')
 
+
+#login
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        # variables for username and password
+        username = request.form['username']
+        password = request.form['password']
+
+        existing_user = User.query.filter_by(username=username).first()
+        # validation
+        if existing_user:
+
+            if not username:
+                flash('Username cannot be left blank.', 'error')
+                return render_template('login.html')
+            if not password:
+                flash('Password cannot be left blank.', 'error')
+                return render_template('login.html')
+            if not username and not password:
+                flash('Fields must not be left blank.', 'error')
+                return render_template('login.html')
+            if user.password != password:
+                flash('The password you entered is incorrect.', 'error')
+                return render_template('login.html')
+            if user and user.password == password:
+                session['username'] = username
+                return redirect('newpost')
+
+        else:
+            flash('The username you entered does not match an existing user. Please try again.')
+            return render_template('login.html')
+    
         
 # runs when main.py file runs
 
