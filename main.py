@@ -155,7 +155,30 @@ def add_user():
 
         if len(user_password) < 3 and len(user_name) < 3:
             flash('Must contain at least three characters.', 'error')
-            return return_template('signup.html')
+            return render_template('signup.html')
+
+        # Add a New User
+
+        # check to see if there is already a user with the username
+        existing_user = User.query.filter_by(username=user_name).first()
+        # if the username is not already in use, create new user
+        if not existing_user:
+            # creates new user
+            new_user = User(user_name, user_password)
+            # adds new user
+            db.session.add(new_user)
+            #commits to the database
+            db.session.commit()
+            # adds username to session so they remain logged in
+            session['username'] = user_name
+            flash('Your profile has successfully been created.', 'success')
+            return redirect('/newpost')
+        else:
+            flash('Error, there is already a user with that username.', 'error')
+            return render_template('signup.html')
+
+    else:
+        return render_template('signup.html')
 
         
 # runs when main.py file runs
