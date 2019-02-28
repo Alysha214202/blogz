@@ -57,6 +57,7 @@ def index():
 @app.route('/blog')
 def display_blog_entries():
     entry_id = request.args.get('id')
+    single_user_id = request.args.get('owner_id')
     if (entry_id):
         entry = Entry.query.get(entry_id)
         return render_template('single_entry.html', title="Blog Post", entry=entry)
@@ -66,6 +67,9 @@ def display_blog_entries():
         # displays newest first
         if (sort=="newest"):
             all_entries = Entry.query.order_by(Entry.created.desc()).all()
+        elif (single_user_id):
+            ind_user_post = Entry.query.filter_by(owner_id=single_user_id)
+            return render_template('singleUser.html', posts=ind_user_post)
         else:
         # just shows all entries
             all_entries = Entry.query.all()
