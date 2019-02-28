@@ -90,9 +90,6 @@ def empty_val(x):
 # form for new blog entry with get, create new entry or redisplay if invalid with post
 def add_entry():
     if request.method == 'POST':
-        #create empty string for errors
-        title_error = ""
-        entry_error = ""
 
         # assigning variable to blog title
         entry_title = request.form['blog_title']
@@ -113,15 +110,14 @@ def add_entry():
             return redirect(post_link)
         else:
             if not empty_val(entry_title) and not empty_val(entry_body):
-                title_error = "Please enter your blog title."
-                entry_error = "Please enter the body of your blog entry."
-                return render_template('new_post.hmtl', entry_error=entry_error, title_error=title_error)
+                flash('Please enter your blog title and body.', 'error')
+                return render_template('new_post.hmtl', entry_title=entry_title, entry_body=entry_body)
             elif not empty_val(entry_title):
-                title_error = "Please enter your blog title."
-                return render_template('new_post.hmtl', title_error=title_error, entry_body=entry_body)
+                flash('Please enter your blog title.', 'error')
+                return render_template('new_post.hmtl', entry_body=entry_body)
             elif not empty_val(entry_body):
-                entry_error = "Please enter the body of your blog entry."
-                return render_template('new_post.hmtl', entry_error=entry_error, entry_title=entry_title)
+                flash('Please enter the body of your blog entry.')
+                return render_template('new_post.hmtl', entry_title=entry_title)
     
     # display new blog entry form
     else:
