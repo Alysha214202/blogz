@@ -208,12 +208,19 @@ def login():
                 return render_template('login.html')
             if user and user.password == password:
                 session['username'] = username
-                return redirect('newpost')
+                return redirect('/newpost')
 
         else:
             flash('The username you entered does not match an existing user. Please try again.')
             return render_template('login.html')
-    
+
+# logout
+
+@app.route('/logout')
+def logout():
+    del session['username']
+    flash('You are logged out', 'success')
+    return redirect('/blog')
         
 # runs when main.py file runs
 
