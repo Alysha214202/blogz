@@ -123,6 +123,41 @@ def add_entry():
     else:
         return render_template('new_post.html')
 
+@app.route('/signup', methods=['POST', 'GET'])
+def add_user():
+
+    if request.method == 'POST':
+        #variable for username
+        user_name = request.form['username']
+        #variable for password
+        user_password = request.form['password']
+        user_password_validation = request.form['password_validation']
+
+        # Validation
+
+        # flash error if username or password are left blank
+        if not empty_val(user_name) or not empty_val(user_password) or not empty_val(user_password_validation):
+            flash('All fields must be filled in', 'error')
+            return render_template('signup.html')
+
+        # flash error if password is left blank
+        if user_password != user_password_validation:
+            flash('Your passwords must match.', 'error')
+            return render_template('signup.html')
+
+        if len(user_password) < 3:
+            flash('Password must be at least three characters.', 'error')
+            return render_template('signup.html')
+
+        if len(user_name) >3:
+            flash('Username must be at least three characters.', 'error')
+            return render_template('signup.html')
+
+        if len(user_password) < 3 and len(user_name) < 3:
+            flash('Must contain at least three characters.', 'error')
+            return return_template('signup.html')
+
+        
 # runs when main.py file runs
 
 if __name__ == "__main__":
