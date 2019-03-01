@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy 
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -18,11 +19,13 @@ class Entry(db.Model):
     title = db.Column(db.Text) # this is the title
     body = db.Column(db.Text) # this is the post
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created = db.Column(db.DateTime)
 
     def __init__(self, title, body, owner):
         self.title = title
         self.body = body
         self.owner = owner
+        self.created = datetime.utcnow()
 
 # class for users
 
@@ -92,9 +95,9 @@ def add_entry():
     if request.method == 'POST':
 
         # assigning variable to blog title
-        entry_title = request.form['blog_title']
+        entry_title = request.form['title']
         # assigning variable to blog body
-        entry_body = request.form['blog_body']
+        entry_body = request.form['body']
         #assigning owner to blog post
         owner = User.query.filter_by(username=session['username']).first()
         # new blog post variable from title and entry
