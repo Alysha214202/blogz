@@ -4,15 +4,13 @@
     <h1> All Blog Entries </h1>
     <ul>
         {% for entry in all_entries %}
-            <li>
+            <div>
                 <h2>
                     <a href="/blog?id={{ entry.id }}">{{ entry.title }}</a>
                 
                 </h2>
-                <p>
-                    {{ entry.body}}
-                </p>
-            </li>
+                <p> class = "entry">{{ entry.body}} </p>
+            </div>
         {% endfor %}
     </ul>
 {% endblock %}
