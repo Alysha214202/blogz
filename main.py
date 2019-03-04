@@ -89,7 +89,7 @@ def empty_val(x):
 
 # redirect and error messages
 
-@app.route('/new_entry', methods=['GET', 'POST'])
+@app.route('/new_entry', methods=['POST', 'GET'])
 # form for new blog entry with get, create new entry or redisplay if invalid with post
 def add_entry():
     if request.method == 'POST':
@@ -109,7 +109,7 @@ def add_entry():
             db.session.add(entry_new)
             # adds to database
             db.session.commit()
-            post_link = "blog?id=" + str(entry_new.id)
+            post_link = "/blog?id=" + str(entry_new.id)
             return redirect(post_link)
         else:
             if not empty_val(entry_title) and not empty_val(entry_body):
@@ -152,7 +152,7 @@ def add_user():
             flash('Password must be at least three characters.', 'error')
             return render_template('signup.html')
 
-        if len(user_name) >3:
+        if len(user_name) < 3:
             flash('Username must be at least three characters.', 'error')
             return render_template('signup.html')
 
